@@ -1,0 +1,44 @@
+routeEnhancers:
+  IndexedSearch:
+    type: Extbase
+    limitToPages: [ 42 ]
+    extension: IndexedSearch
+    plugin: Pi2
+    routes:
+    - routePath: '/{extendedSearch}'
+      _controller: 'Search::form'
+      _arguments:
+        extendedSearch: search/extendedSearch
+    - routePath: '/{results}'
+      _controller: 'Search::search'
+    defaults:
+      extendedSearch: '0'
+    aspects:
+      results:
+        type: LocaleModifier
+        default: 'results'
+        localeMap:
+        - locale: 'de_DE.*'
+          value: 'ergebnisse'
+        - locale: 'es_ES.*'
+          value: 'resultados'
+        - locale: 'fr_FR.*'
+          value: 'resultats'
+      extendedSearch:
+        type: StaticValueMapper
+        map:
+          '': '0'
+          extended: '1'
+        localeMap:
+        - locale: 'de_.*'
+          map:
+            '': '0'
+            erweitert: '1'
+        - locale: 'es_ES.*'
+          map:
+            '': '0'
+            ampliada: '1'
+        - locale: 'fr_FR.*'
+          map:
+            '': '0'
+            etendue: '1'
